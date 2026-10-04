@@ -1,0 +1,4674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#071014"
+    >
+
+    <title>
+        SHAIL — Administration
+    </title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #071014;
+            --bg2: #0b171c;
+            --panel: rgba(16, 29, 35, 0.88);
+            --panel2: rgba(22, 38, 45, 0.94);
+
+            --text: #f4f7f8;
+            --muted: #91a3aa;
+
+            --cyan: #63e6ff;
+            --cyan2: #19bfe5;
+
+            --gold: #e5b967;
+            --green: #55e6a5;
+            --red: #ff6878;
+
+            --border: rgba(255,255,255,0.09);
+
+            --shadow:
+                0 25px 80px rgba(0,0,0,0.45);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            color: var(--text);
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(41, 202, 235, 0.10),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 85% 85%,
+                    rgba(229,185,103,0.08),
+                    transparent 30%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #050b0e,
+                    #071014,
+                    #0b171c
+                );
+
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            background:
+                linear-gradient(
+                    115deg,
+                    transparent 0%,
+                    rgba(255,255,255,0.025) 50%,
+                    transparent 100%
+                );
+
+            opacity: .6;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           SIDEBAR
+           ===================================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 270px;
+
+            padding: 25px 18px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(8,20,25,.98),
+                    rgba(5,13,17,.98)
+                );
+
+            border-right:
+                1px solid var(--border);
+
+            z-index: 100;
+
+            box-shadow:
+                20px 0 80px rgba(0,0,0,.25);
+        }
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding:
+                5px 10px 28px;
+        }
+
+        .brand-logo {
+
+            width: 44px;
+            height: 44px;
+
+            border-radius: 13px;
+
+            display: grid;
+            place-items: center;
+
+            font-weight: 900;
+
+            color: #061014;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #75e8ff,
+                    #c9a45f
+                );
+
+            box-shadow:
+                0 0 30px
+                rgba(99,230,255,.22);
+        }
+
+        .brand-text strong {
+
+            display: block;
+
+            font-size: 14px;
+
+            letter-spacing: .08em;
+        }
+
+        .brand-text span {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            letter-spacing: .12em;
+        }
+
+        .admin-profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 14px;
+
+            margin-bottom: 25px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 17px;
+
+            background:
+                rgba(255,255,255,.025);
+        }
+
+        .profile-avatar {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            display: grid;
+            place-items: center;
+
+            font-weight: 800;
+
+            color: #061014;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--cyan),
+                    #ffffff
+                );
+        }
+
+        .profile-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .profile-info span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            font-size: 10px;
+
+            color: var(--green);
+        }
+
+        .menu-title {
+
+            margin:
+                20px 12px 10px;
+
+            color: #60747b;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: .16em;
+
+            text-transform: uppercase;
+        }
+
+        .sidebar-nav {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+        }
+
+        .nav-item {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 13px 14px;
+
+            border: 1px solid transparent;
+
+            border-radius: 13px;
+
+            background: transparent;
+
+            color: #8fa2a9;
+
+            text-align: left;
+
+            transition:
+                .25s ease;
+        }
+
+        .nav-item:hover {
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.04);
+
+            border-color:
+                rgba(255,255,255,.06);
+
+            transform:
+                translateX(3px);
+        }
+
+        .nav-item.active {
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(99,230,255,.13),
+                    rgba(99,230,255,.025)
+                );
+
+            border-color:
+                rgba(99,230,255,.16);
+
+            box-shadow:
+                inset 3px 0 0 var(--cyan);
+        }
+
+        .nav-icon {
+
+            width: 23px;
+
+            text-align: center;
+
+            font-size: 16px;
+        }
+
+        .sidebar-bottom {
+
+            position: absolute;
+
+            left: 18px;
+            right: 18px;
+            bottom: 20px;
+        }
+
+        .logout {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(255,104,120,.16);
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,104,120,.05);
+
+            color: #ff8491;
+
+            transition: .25s;
+        }
+
+        .logout:hover {
+
+            background:
+                rgba(255,104,120,.12);
+
+            transform:
+                translateY(-2px);
+        }
+
+        /* =====================================================
+           MAIN
+           ===================================================== */
+
+        .main {
+
+            margin-left: 270px;
+
+            min-height: 100vh;
+
+            padding: 30px 35px 60px;
+        }
+
+        .topbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+
+            font-size:
+                clamp(25px, 3vw, 40px);
+
+            line-height: 1.1;
+
+            letter-spacing: -.04em;
+        }
+
+        .page-title p {
+
+            margin-top: 8px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+        .top-actions {
+
+            display: flex;
+
+            gap: 10px;
+        }
+
+        .top-btn {
+
+            padding:
+                11px 15px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.035);
+
+            transition: .25s;
+        }
+
+        .top-btn:hover {
+
+            border-color:
+                rgba(99,230,255,.35);
+
+            transform:
+                translateY(-2px);
+        }
+
+        /* =====================================================
+           STATS
+           ===================================================== */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 22px;
+
+            min-height: 135px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(21,37,44,.95),
+                    rgba(10,20,25,.9)
+                );
+
+            box-shadow:
+                var(--shadow);
+
+            transition: .3s;
+        }
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(99,230,255,.22);
+        }
+
+        .stat-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 120px;
+            height: 120px;
+
+            right: -50px;
+            top: -50px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(99,230,255,.07);
+
+            filter:
+                blur(10px);
+        }
+
+        .stat-label {
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .stat-number {
+
+            margin-top: 13px;
+
+            font-size: 31px;
+
+            font-weight: 800;
+        }
+
+        .stat-change {
+
+            margin-top: 7px;
+
+            color: var(--green);
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           CONTENT PANEL
+           ===================================================== */
+
+        .panel {
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(17,31,37,.96),
+                    rgba(8,17,21,.96)
+                );
+
+            box-shadow:
+                var(--shadow);
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 23px 25px;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+        .panel-title h2 {
+
+            font-size: 19px;
+        }
+
+        .panel-title p {
+
+            margin-top: 5px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        .primary-btn {
+
+            border: none;
+
+            border-radius: 12px;
+
+            padding:
+                12px 17px;
+
+            color: #061014;
+
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    var(--cyan)
+                );
+
+            box-shadow:
+                0 10px 30px
+                rgba(99,230,255,.16);
+
+            transition: .25s;
+        }
+
+        .primary-btn:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 15px 40px
+                rgba(99,230,255,.28);
+        }
+
+        /* =====================================================
+           TOOLBAR
+           ===================================================== */
+
+        .toolbar {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 20px 25px;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+        .search-box {
+
+            flex: 1;
+
+            position: relative;
+        }
+
+        .search-box input {
+
+            width: 100%;
+
+            padding:
+                13px 15px 13px 42px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            outline: none;
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.035);
+
+            transition: .25s;
+        }
+
+        .search-box input:focus {
+
+            border-color:
+                rgba(99,230,255,.45);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(99,230,255,.05);
+        }
+
+        .search-icon {
+
+            position: absolute;
+
+            left: 15px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: #789098;
+        }
+
+        .category-filter {
+
+            min-width: 180px;
+
+            padding: 13px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            outline: none;
+
+            color: white;
+
+            background:
+                #101e23;
+        }
+
+        .category-filter option {
+
+            background:
+                #101e23;
+        }
+
+        /* =====================================================
+           PRODUCT GRID
+           ===================================================== */
+
+        .products-area {
+
+            padding: 25px;
+        }
+
+        .product-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+        .product-card {
+
+            overflow: hidden;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            transition:
+                transform .3s,
+                border-color .3s,
+                box-shadow .3s;
+        }
+
+        .product-card:hover {
+
+            transform:
+                translateY(-6px);
+
+            border-color:
+                rgba(99,230,255,.24);
+
+            box-shadow:
+                0 20px 45px
+                rgba(0,0,0,.35);
+        }
+
+        .product-image {
+
+            position: relative;
+
+            height: 190px;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #152b32,
+                    #091317
+                );
+        }
+
+        .product-image img {
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition:
+                transform .5s;
+        }
+
+        .product-card:hover
+        .product-image img {
+
+            transform:
+                scale(1.07);
+        }
+
+        .product-placeholder {
+
+            width: 100%;
+            height: 100%;
+
+            display: grid;
+
+            place-items: center;
+
+            color: #61777e;
+
+            font-size: 45px;
+        }
+
+        .category-badge {
+
+            position: absolute;
+
+            left: 12px;
+            top: 12px;
+
+            padding:
+                6px 9px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+
+            border-radius: 20px;
+
+            color: white;
+
+            font-size: 10px;
+
+            background:
+                rgba(5,13,17,.72);
+
+            backdrop-filter:
+                blur(12px);
+        }
+
+        .product-body {
+
+            padding: 17px;
+        }
+
+        .product-body h3 {
+
+            font-size: 16px;
+
+            line-height: 1.3;
+        }
+
+        .product-description {
+
+            height: 35px;
+
+            overflow: hidden;
+
+            margin-top: 7px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+        .product-price {
+
+            margin-top: 13px;
+
+            color: var(--cyan);
+
+            font-size: 18px;
+
+            font-weight: 800;
+        }
+
+        .product-actions {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 15px;
+        }
+
+        .small-btn {
+
+            flex: 1;
+
+            padding: 9px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 9px;
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.035);
+
+            font-size: 11px;
+
+            transition: .2s;
+        }
+
+        .small-btn:hover {
+
+            border-color:
+                rgba(99,230,255,.3);
+        }
+
+        .small-btn.delete:hover {
+
+            color: white;
+
+            border-color:
+                rgba(255,104,120,.4);
+
+            background:
+                rgba(255,104,120,.1);
+        }
+
+        /* =====================================================
+           EMPTY STATE
+           ===================================================== */
+
+        .empty-state {
+
+            display: none;
+
+            padding: 70px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+        .empty-state-icon {
+
+            font-size: 48px;
+
+            margin-bottom: 15px;
+        }
+
+        .empty-state h3 {
+
+            color: white;
+
+            margin-bottom: 7px;
+        }
+
+        /* =====================================================
+           MODAL
+           ===================================================== */
+
+        .modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 500;
+
+            background:
+                rgba(0,0,0,.75);
+
+            backdrop-filter:
+                blur(14px);
+        }
+
+        .modal.active {
+
+            display: flex;
+        }
+
+        .modal-box {
+
+            width: min(700px, 100%);
+
+            max-height:
+                calc(100vh - 40px);
+
+            overflow-y: auto;
+
+            border:
+                1px solid
+                rgba(255,255,255,.12);
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #14252b,
+                    #091317
+                );
+
+            box-shadow:
+                0 40px 100px
+                rgba(0,0,0,.6);
+
+            animation:
+                modalIn .35s ease;
+        }
+
+        @keyframes modalIn {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(30px)
+                    scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+        .modal-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 22px 25px;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+        .modal-header h2 {
+
+            font-size: 20px;
+        }
+
+        .close-modal {
+
+            width: 38px;
+            height: 38px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 10px;
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.035);
+
+            font-size: 20px;
+
+            transition: .2s;
+        }
+
+        .close-modal:hover {
+
+            background:
+                rgba(255,104,120,.1);
+
+            border-color:
+                rgba(255,104,120,.25);
+        }
+
+        .product-form {
+
+            padding: 25px;
+        }
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 17px;
+        }
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .form-group.full {
+
+            grid-column:
+                1 / -1;
+        }
+
+        .form-group label {
+
+            color: #aab9be;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+
+            width: 100%;
+
+            padding: 13px;
+
+            outline: none;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 11px;
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.035);
+
+            transition: .25s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+
+            border-color:
+                rgba(99,230,255,.45);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(99,230,255,.05);
+        }
+
+        .form-group textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+        .form-group select option {
+
+            background: #101e23;
+        }
+
+        /* =====================================================
+           IMAGE UPLOAD
+           ===================================================== */
+
+        .image-upload {
+
+            position: relative;
+
+            min-height: 190px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            overflow: hidden;
+
+            border:
+                1px dashed
+                rgba(99,230,255,.35);
+
+            border-radius: 15px;
+
+            background:
+                rgba(99,230,255,.025);
+
+            transition: .25s;
+        }
+
+        .image-upload:hover {
+
+            border-color:
+                rgba(99,230,255,.7);
+
+            background:
+                rgba(99,230,255,.05);
+        }
+
+        .image-upload-content {
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+        .upload-icon {
+
+            font-size: 38px;
+
+            margin-bottom: 8px;
+        }
+
+        .image-upload-content strong {
+
+            display: block;
+
+            color: white;
+
+            font-size: 13px;
+        }
+
+        .image-upload-content span {
+
+            display: block;
+
+            margin-top: 5px;
+
+            font-size: 10px;
+        }
+
+        #productImage {
+
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            opacity: 0;
+
+            cursor: pointer;
+        }
+
+        .image-preview {
+
+            display: none;
+
+            width: 100%;
+            height: 190px;
+
+            object-fit: cover;
+
+            border-radius: 15px;
+        }
+
+        .form-footer {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            margin-top: 22px;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid var(--border);
+        }
+
+        .secondary-btn {
+
+            padding:
+                12px 18px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 11px;
+
+            color: #b9c6ca;
+
+            background:
+                rgba(255,255,255,.035);
+        }
+
+        /* =====================================================
+           TOAST
+           ===================================================== */
+
+        .toast {
+
+            position: fixed;
+
+            right: 25px;
+            bottom: 25px;
+
+            min-width: 280px;
+
+            padding: 15px 18px;
+
+            border:
+                1px solid
+                rgba(99,230,255,.2);
+
+            border-radius: 14px;
+
+            color: white;
+
+            background:
+                rgba(13,29,35,.96);
+
+            box-shadow:
+                0 20px 50px
+                rgba(0,0,0,.4);
+
+            transform:
+                translateY(120px);
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition: .35s;
+
+            z-index: 900;
+        }
+
+        .toast.show {
+
+            transform:
+                translateY(0);
+
+            opacity: 1;
+        }
+
+
+        /* =====================================================
+           SHOP TIMINGS MODULE
+           ===================================================== */
+
+        .module-hidden {
+            display: none !important;
+        }
+
+        .timings-panel {
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            background: linear-gradient(145deg, rgba(17,31,37,.96), rgba(8,17,21,.96));
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .timings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 23px 25px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .timings-header h2 { font-size: 19px; }
+        .timings-header p { margin-top: 5px; color: var(--muted); font-size: 11px; }
+
+        .shop-status-card {
+            margin: 22px 25px 0;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border: 1px solid rgba(85,230,165,.16);
+            border-radius: 16px;
+            background: rgba(85,230,165,.045);
+        }
+
+        .shop-status-copy strong { display:block; font-size: 14px; }
+        .shop-status-copy span { display:block; margin-top:5px; color:var(--muted); font-size:11px; }
+
+        .status-toggle {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            cursor:pointer;
+        }
+
+        .status-toggle input { display:none; }
+
+        .toggle-track {
+            width:52px;
+            height:29px;
+            padding:3px;
+            border-radius:30px;
+            background:#26373d;
+            transition:.25s;
+        }
+
+        .toggle-track::after {
+            content:"";
+            display:block;
+            width:23px;
+            height:23px;
+            border-radius:50%;
+            background:#9aabb0;
+            transition:.25s;
+        }
+
+        .status-toggle input:checked + .toggle-track {
+            background:rgba(85,230,165,.35);
+            box-shadow:0 0 18px rgba(85,230,165,.12);
+        }
+
+        .status-toggle input:checked + .toggle-track::after {
+            transform:translateX(23px);
+            background:var(--green);
+        }
+
+        .status-label {
+            min-width:55px;
+            color:#9aabb0;
+            font-size:11px;
+            font-weight:800;
+        }
+
+        .status-toggle input:checked ~ .status-label { color:var(--green); }
+
+        .timings-body { padding:25px; }
+
+        .day-list { display:grid; gap:10px; }
+
+        .day-row {
+            display:grid;
+            grid-template-columns:130px 1fr 1fr 105px;
+            align-items:center;
+            gap:12px;
+            padding:14px;
+            border:1px solid var(--border);
+            border-radius:14px;
+            background:rgba(255,255,255,.025);
+            transition:.25s;
+        }
+
+        .day-row:hover { border-color:rgba(99,230,255,.22); transform:translateX(2px); }
+        .day-name { font-weight:700; font-size:12px; }
+        .day-row.closed { opacity:.72; }
+
+        .time-field { display:flex; flex-direction:column; gap:5px; }
+        .time-field span { color:#60747b; font-size:9px; text-transform:uppercase; letter-spacing:.08em; }
+        .time-field input {
+            width:100%;
+            padding:10px;
+            border:1px solid var(--border);
+            border-radius:10px;
+            outline:none;
+            color:white;
+            background:rgba(255,255,255,.035);
+        }
+        .time-field input:focus { border-color:rgba(99,230,255,.45); }
+
+        .day-toggle {
+            justify-self:end;
+            display:flex;
+            align-items:center;
+            gap:7px;
+            color:#91a3aa;
+            font-size:10px;
+            cursor:pointer;
+        }
+        .day-toggle input { accent-color:var(--green); }
+
+        .notice-box { margin-top:20px; }
+        .notice-box label { display:block; margin-bottom:7px; color:#aab9be; font-size:11px; font-weight:700; }
+        .notice-box textarea {
+            width:100%; min-height:90px; resize:vertical; outline:none;
+            padding:13px; border:1px solid var(--border); border-radius:11px;
+            color:white; background:rgba(255,255,255,.035);
+        }
+        .notice-box textarea:focus { border-color:rgba(99,230,255,.45); box-shadow:0 0 0 4px rgba(99,230,255,.05); }
+
+        .timings-footer {
+            display:flex;
+            justify-content:flex-end;
+            gap:10px;
+            margin-top:20px;
+            padding-top:20px;
+            border-top:1px solid var(--border);
+        }
+
+        .module-panel {
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            background: linear-gradient(145deg, rgba(17,31,37,.96), rgba(8,17,21,.96));
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .module-body {
+            padding: 25px;
+        }
+
+        .module-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .module-form-grid .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .module-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .module-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255,255,255,.025);
+        }
+
+        .module-item strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .module-item span,
+        .module-item small {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .module-item .muted-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 700;
+            background: rgba(99,230,255,.08);
+            color: var(--cyan);
+            border: 1px solid rgba(99,230,255,.18);
+        }
+
+        .module-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .invoice-summary {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .summary-box {
+            padding: 15px 16px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255,255,255,.025);
+        }
+
+        .summary-box span {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .summary-box strong {
+            display: block;
+            margin-top: 8px;
+            font-size: 22px;
+            color: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .gallery-card {
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: rgba(255,255,255,.025);
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-card-content {
+            padding: 14px;
+        }
+
+        .gallery-card-content strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        .gallery-card-content span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        @media (max-width:650px) {
+            .day-row { grid-template-columns:1fr 1fr; }
+            .day-name { grid-column:1/-1; }
+            .day-toggle { justify-self:start; }
+            .shop-status-card { align-items:flex-start; flex-direction:column; }
+            .module-form-grid,
+            .invoice-summary,
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 1150px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .product-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+
+                width: 80px;
+
+                padding:
+                    20px 10px;
+            }
+
+            .brand-text,
+            .profile-info,
+            .menu-title,
+            .nav-label,
+            .logout span {
+
+                display: none;
+            }
+
+            .brand {
+                justify-content: center;
+            }
+
+            .admin-profile {
+                justify-content: center;
+            }
+
+            .nav-item {
+                justify-content: center;
+            }
+
+            .logout {
+                font-size: 0;
+            }
+
+            .logout::before {
+                content: "↪";
+                font-size: 18px;
+            }
+
+            .main {
+                margin-left: 80px;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .main {
+                padding:
+                    20px 15px 40px;
+            }
+
+            .topbar {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .products-area {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 420px) {
+
+            .sidebar {
+                width: 65px;
+            }
+
+            .main {
+                margin-left: 65px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-actions {
+                width: 100%;
+            }
+
+            .top-btn {
+                flex: 1;
+            }
+        }
+
+    </style>
+
+    <script>
+        document.documentElement.classList.add("admin-auth-pending");
+        const adminStorageKeys = [
+            "shail_admin_products",
+            "shail_aquarium_items",
+            "shail_billing_records",
+            "shail_gallery_items",
+            "shail_shop_timings",
+            "shail_business_settings"
+        ];
+        const originalSetItem = Storage.prototype.setItem;
+
+        async function startAdmin() {
+            const sessionResponse = await fetch("/api/admin/session", {
+                credentials: "same-origin",
+                cache: "no-store"
+            });
+            if (!sessionResponse.ok) {
+                window.location.replace("/index.html?admin=login");
+                return;
+            }
+
+            const dataResponse = await fetch("/api/admin/data", {
+                credentials: "same-origin",
+                cache: "no-store"
+            });
+            if (!dataResponse.ok) throw new Error("Unable to load saved business data.");
+            const remoteData = await dataResponse.json();
+            let needsReload = false;
+
+            for (const key of adminStorageKeys) {
+                const localValue = localStorage.getItem(key);
+                if (Object.prototype.hasOwnProperty.call(remoteData, key)) {
+                    const remoteValue = JSON.stringify(remoteData[key]);
+                    if (localValue !== remoteValue) {
+                        originalSetItem.call(localStorage, key, remoteValue);
+                        needsReload = true;
+                    }
+                } else if (localValue !== null) {
+                    try {
+                        const response = await fetch(`/api/admin/data/${encodeURIComponent(key)}`, {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            credentials: "same-origin",
+                            body: localValue
+                        });
+                        if (!response.ok) throw new Error("Unable to import existing browser data.");
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            }
+
+            if (needsReload) {
+                window.location.reload();
+                return;
+            }
+
+            Storage.prototype.setItem = function (key, value) {
+                originalSetItem.call(this, key, value);
+                if (this !== window.localStorage || !adminStorageKeys.includes(key)) return;
+
+                fetch(`/api/admin/data/${encodeURIComponent(key)}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "same-origin",
+                    body: value
+                }).then(response => {
+                    if (!response.ok) throw new Error("Unable to sync saved admin data.");
+                }).catch(error => {
+                    console.error(error);
+                    window.dispatchEvent(new Event("shail-admin-sync-error"));
+                });
+            };
+
+            document.documentElement.classList.remove("admin-auth-pending");
+        }
+
+        startAdmin().catch(error => {
+            console.error(error);
+            window.location.replace("/index.html?admin=login");
+        });
+    </script>
+
+    <style>
+        html.admin-auth-pending body {
+            visibility: hidden;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                SG
+            </div>
+
+            <div class="brand-text">
+
+                <strong>
+                    SHAIL
+                </strong>
+
+                <span>
+                    ADMINISTRATION
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-profile">
+
+            <div class="profile-avatar">
+                N
+            </div>
+
+            <div class="profile-info">
+
+                <strong>
+                    Nitya
+                </strong>
+
+                <span>
+                    ● System Online
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            Management
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <button
+                class="nav-item active"
+                data-section="dashboard"
+            >
+                <span class="nav-icon">
+                    ◈
+                </span>
+
+                <span class="nav-label">
+                    Dashboard
+                </span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-section="products"
+            >
+                <span class="nav-icon">
+                    ▣
+                </span>
+
+                <span class="nav-label">
+                    Products
+                </span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-section="aquarium"
+            >
+                <span class="nav-icon">
+                    ◉
+                </span>
+
+                <span class="nav-label">
+                    Aquarium & Fish
+                </span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-section="billing"
+            >
+                <span class="nav-icon">
+                    ₹
+                </span>
+
+                <span class="nav-label">
+                    Billing
+                </span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-section="timings"
+            >
+                <span class="nav-icon">
+                    ◷
+                </span>
+
+                <span class="nav-label">
+                    Shop Timings
+                </span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-section="gallery"
+            >
+                <span class="nav-icon">
+                    ▧
+                </span>
+
+                <span class="nav-label">
+                    Gallery
+                </span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-section="settings"
+            >
+                <span class="nav-icon">
+                    ⚙
+                </span>
+
+                <span class="nav-label">
+                    Settings
+                </span>
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <button
+                class="logout"
+                id="logoutButton"
+            >
+                <span>
+                    Logout
+                </span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div class="page-title">
+
+                <h1>
+                    Product Management
+                </h1>
+
+                <p>
+                    Manage your aluminium, glass,
+                    aquarium, fish and accessory catalogue.
+                </p>
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button
+                    class="top-btn"
+                    id="languageToggle"
+                    type="button"
+                    aria-label="Switch language"
+                    data-no-translate
+                >
+                    <span id="adminLanguageLabel">हिंदी</span>
+                </button>
+
+                <button
+                    class="top-btn"
+                    id="openWebsite"
+                >
+                    ↗ Open Website
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             STATISTICS
+             ================================================= -->
+
+        <section class="stats-grid" id="dashboardStats">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Total Products
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="totalProducts"
+                >
+                    0
+                </div>
+
+                <div class="stat-change">
+                    Catalogue
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Aluminium & Glass
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="metalGlassCount"
+                >
+                    0
+                </div>
+
+                <div class="stat-change">
+                    Products
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Aquarium & Fish
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="aquariumCount"
+                >
+                    0
+                </div>
+
+                <div class="stat-change">
+                    Products
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Catalogue Value
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="catalogueValue"
+                >
+                    ₹0
+                </div>
+
+                <div class="stat-change">
+                    Current listings
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PRODUCT PANEL
+             ================================================= -->
+
+        <section class="panel" id="productsPanel">
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+
+                    <h2>
+                        Product Catalogue
+                    </h2>
+
+                    <p>
+                        Add and manage products displayed
+                        on the customer website.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    id="addProductButton"
+                >
+                    + Add Product
+                </button>
+
+            </div>
+
+
+            <div class="toolbar">
+
+                <div class="search-box">
+
+                    <span class="search-icon">
+                        ⌕
+                    </span>
+
+                    <input
+                        type="search"
+                        id="productSearch"
+                        placeholder="Search products..."
+                    >
+
+                </div>
+
+
+                <select
+                    id="categoryFilter"
+                    class="category-filter"
+                >
+
+                    <option value="all">
+                        All Categories
+                    </option>
+
+                    <option value="Aluminium">
+                        Aluminium
+                    </option>
+
+                    <option value="Glass">
+                        Glass
+                    </option>
+
+                    <option value="Aquarium">
+                        Aquarium
+                    </option>
+
+                    <option value="Live Fish">
+                        Live Fish
+                    </option>
+
+                    <option value="Accessories">
+                        Accessories
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="products-area">
+
+                <div
+                    class="product-grid"
+                    id="productGrid"
+                >
+                </div>
+
+
+                <div
+                    class="empty-state"
+                    id="emptyState"
+                >
+
+                    <div class="empty-state-icon">
+                        ◇
+                    </div>
+
+                    <h3>
+                        No products found
+                    </h3>
+
+                    <p>
+                        Add your first product to
+                        start building the catalogue.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SHOP TIMINGS PANEL
+             ================================================= -->
+
+        <section class="timings-panel module-hidden" id="timingsPanel">
+
+            <div class="timings-header">
+                <div>
+                    <h2>Shop Timings</h2>
+                    <p>Control the opening hours shown on your customer website.</p>
+                </div>
+
+                <button class="secondary-btn" type="button" id="resetTimingsButton">
+                    Reset Defaults
+                </button>
+            </div>
+
+            <div class="shop-status-card">
+                <div class="shop-status-copy">
+                    <strong>Shop Availability</strong>
+                    <span>Turn this off temporarily if the shop is closed for a special reason.</span>
+                </div>
+
+                <label class="status-toggle">
+                    <input type="checkbox" id="shopEnabled" checked>
+                    <span class="toggle-track"></span>
+                    <span class="status-label" id="shopEnabledLabel">OPEN</span>
+                </label>
+            </div>
+
+            <div class="timings-body">
+                <div class="day-list" id="dayList"></div>
+
+                <div class="notice-box">
+                    <label for="shopNotice">Customer Notice</label>
+                    <textarea id="shopNotice" placeholder="Example: We are closed on Sunday for weekly maintenance."></textarea>
+                </div>
+
+                <div class="timings-footer">
+                    <button class="secondary-btn" type="button" id="cancelTimingsButton">
+                        Cancel Changes
+                    </button>
+
+                    <button class="primary-btn" type="button" id="saveTimingsButton">
+                        Save Shop Timings
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="panel module-panel module-hidden" id="aquariumPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>Aquarium & Fish Inventory</h2>
+                    <p>Add and manage aquarium stock, fish and accessories.</p>
+                </div>
+                <button class="primary-btn" type="button" id="addAquariumButton">+ Add Item</button>
+            </div>
+
+            <div class="module-body">
+                <form id="aquariumForm" class="module-form-grid">
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" id="aquariumName" placeholder="Example: Premium Guppy Pair" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="aquariumCategory" required>
+                            <option value="Aquarium">Aquarium</option>
+                            <option value="Live Fish">Live Fish</option>
+                            <option value="Accessories">Accessories</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price (₹)</label>
+                        <input type="number" id="aquariumPrice" min="0" step="0.01" value="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" id="aquariumStock" min="0" value="1" required>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Notes</label>
+                        <textarea id="aquariumNotes" placeholder="Add product notes, tank size, fish type or care instructions."></textarea>
+                    </div>
+
+                    <div class="module-actions" style="grid-column:1 / -1; margin-top:0; padding-top:0; border-top:none;">
+                        <button type="button" class="secondary-btn" id="cancelAquariumButton">Clear</button>
+                        <button type="submit" class="primary-btn">Save Item</button>
+                    </div>
+                </form>
+
+                <div class="module-list" id="aquariumList"></div>
+            </div>
+        </section>
+
+        <section class="panel module-panel module-hidden" id="billingPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>Billing & Invoices</h2>
+                    <p>Track customer orders and create quick sales records.</p>
+                </div>
+            </div>
+
+            <div class="module-body">
+                <div class="invoice-summary">
+                    <div class="summary-box">
+                        <span>Total Sales</span>
+                        <strong id="invoiceTotal">₹0</strong>
+                    </div>
+                    <div class="summary-box">
+                        <span>Invoices</span>
+                        <strong id="invoiceCount">0</strong>
+                    </div>
+                    <div class="summary-box">
+                        <span>Today</span>
+                        <strong id="todaySales">₹0</strong>
+                    </div>
+                </div>
+
+                <form id="billingForm" class="module-form-grid">
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text" id="billingCustomer" placeholder="Example: Aditi Sharma" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="billingPhone" placeholder="+91 98XXXXXXXX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Item</label>
+                        <input type="text" id="billingItem" placeholder="Glass door / Aquarium / Fish" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" id="billingQty" min="1" value="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Unit Price (₹)</label>
+                        <input type="number" id="billingPrice" min="0" step="0.01" value="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <select id="billingMethod">
+                            <option value="Cash">Cash</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Card">Card</option>
+                        </select>
+                    </div>
+
+                    <div class="module-actions" style="grid-column:1 / -1; margin-top:0; padding-top:0; border-top:none;">
+                        <button type="button" class="secondary-btn" id="clearBillingButton">Clear</button>
+                        <button type="submit" class="primary-btn">Create Invoice</button>
+                    </div>
+                </form>
+
+                <div class="module-list" id="invoiceList"></div>
+            </div>
+        </section>
+
+        <section class="panel module-panel module-hidden" id="galleryPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>Gallery Manager</h2>
+                    <p>Upload and display project images for the showcase section.</p>
+                </div>
+            </div>
+
+            <div class="module-body">
+                <form id="galleryForm" class="module-form-grid">
+                    <div class="form-group">
+                        <label>Image Title</label>
+                        <input type="text" id="galleryTitle" placeholder="Example: Aluminium facade" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="galleryCategory">
+                            <option value="Project">Project</option>
+                            <option value="Architecture">Architecture</option>
+                            <option value="Aquarium">Aquarium</option>
+                            <option value="Glass">Glass</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Choose Image</label>
+                        <input type="file" id="galleryImage" accept="image/*" required>
+                    </div>
+
+                    <div class="module-actions" style="grid-column:1 / -1; margin-top:0; padding-top:0; border-top:none;">
+                        <button type="button" class="secondary-btn" id="clearGalleryButton">Clear</button>
+                        <button type="submit" class="primary-btn">Save to Gallery</button>
+                    </div>
+                </form>
+
+                <div class="gallery-grid" id="galleryGrid"></div>
+            </div>
+        </section>
+
+        <section class="panel module-panel module-hidden" id="settingsPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>Business Settings</h2>
+                    <p>Update the public-facing company details and contact information.</p>
+                </div>
+            </div>
+
+            <div class="module-body">
+                <form id="settingsForm" class="module-form-grid">
+                    <div class="form-group">
+                        <label>Business Name</label>
+                        <input type="text" id="shopName" placeholder="SHAIL Aluminium & Glass">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="shopPhone" placeholder="+91 9532475637">
+                    </div>
+
+                    <div class="form-group">
+                        <label>WhatsApp</label>
+                        <input type="tel" id="shopWhatsapp" placeholder="919532475637">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="shopEmail" placeholder="hello@shailfabricants.in">
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Address</label>
+                        <textarea id="shopAddress" placeholder="Gorakhpur, Uttar Pradesh"></textarea>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Business Notice</label>
+                        <textarea id="shopAnnouncement" placeholder="Short message shown to visitors on the website."></textarea>
+                    </div>
+
+                    <div class="module-actions" style="grid-column:1 / -1; margin-top:0; padding-top:0; border-top:none;">
+                        <button type="button" class="secondary-btn" id="resetSettingsButton">Reset</button>
+                        <button type="submit" class="primary-btn">Save Settings</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         ADD PRODUCT MODAL
+         ===================================================== -->
+
+    <div
+        class="modal"
+        id="productModal"
+    >
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <h2 id="modalTitle">
+                    Add New Product
+                </h2>
+
+                <button
+                    class="close-modal"
+                    id="closeProductModal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form
+                class="product-form"
+                id="productForm"
+            >
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Product Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productName"
+                            placeholder="Example: Premium Aluminium Door"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Category
+                        </label>
+
+                        <select
+                            id="productCategory"
+                            required
+                        >
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="Aluminium">
+                                Aluminium
+                            </option>
+
+                            <option value="Glass">
+                                Glass
+                            </option>
+
+                            <option value="Aquarium">
+                                Aquarium
+                            </option>
+
+                            <option value="Live Fish">
+                                Live Fish
+                            </option>
+
+                            <option value="Accessories">
+                                Accessories
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Price (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productPrice"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Product Code
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productCode"
+                            placeholder="Example: ALG-001"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Product Description
+                        </label>
+
+                        <textarea
+                            id="productDescription"
+                            placeholder="Describe the product, specifications, dimensions, material, features..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Product Image
+                        </label>
+
+
+                        <div class="image-upload">
+
+                            <div
+                                class="image-upload-content"
+                                id="uploadContent"
+                            >
+
+                                <div class="upload-icon">
+                                    ◈
+                                </div>
+
+                                <strong>
+                                    Click to upload product image
+                                </strong>
+
+                                <span>
+                                    JPG, PNG or WEBP
+                                </span>
+
+                            </div>
+
+
+                            <img
+                                id="imagePreview"
+                                class="image-preview"
+                                alt="Product preview"
+                            >
+
+
+                            <input
+                                type="file"
+                                id="productImage"
+                                accept="image/png,image/jpeg,image/webp"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-footer">
+
+                    <button
+                        type="button"
+                        class="secondary-btn"
+                        id="cancelProduct"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Save Product
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TOAST
+         ===================================================== -->
+
+    <div
+        class="toast"
+        id="toast"
+    >
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script>
+
+        "use strict";
+
+
+        /* =================================================
+           PRODUCT STORAGE
+           ================================================= */
+
+        const PRODUCT_STORAGE =
+            "shail_admin_products";
+
+        function seedStarterProducts() {
+
+            const savedProducts =
+                localStorage.getItem(
+                    PRODUCT_STORAGE
+                );
+
+            if (savedProducts) {
+
+                try {
+                    const parsed = JSON.parse(savedProducts);
+
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed;
+                    }
+                } catch (error) {
+                    console.warn("Unable to parse saved products.", error);
+                }
+
+            }
+
+            const starterProducts = [
+                {
+                    id: 1,
+                    name: "Premium Aluminium Window",
+                    category: "Aluminium",
+                    price: 2400,
+                    code: "AL-101",
+                    description: "Modern sliding window with corrosion-resistant framing and premium finish.",
+                    image: "",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    name: "Tempered Glass Door",
+                    category: "Glass",
+                    price: 4200,
+                    code: "GL-205",
+                    description: "Elegant glass door system designed for homes and shops.",
+                    image: "",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 3,
+                    name: "Aquarium Display Tank",
+                    category: "Aquarium",
+                    price: 6800,
+                    code: "AQ-320",
+                    description: "Custom aquarium for premium retail and home display installations.",
+                    image: "",
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            localStorage.setItem(
+                PRODUCT_STORAGE,
+                JSON.stringify(starterProducts)
+            );
+
+            return starterProducts;
+        }
+
+
+        let products =
+            seedStarterProducts();
+
+
+        /* =================================================
+           ELEMENTS
+           ================================================= */
+
+        const productGrid =
+            document.getElementById(
+                "productGrid"
+            );
+
+        const emptyState =
+            document.getElementById(
+                "emptyState"
+            );
+
+        const productModal =
+            document.getElementById(
+                "productModal"
+            );
+
+        const productForm =
+            document.getElementById(
+                "productForm"
+            );
+
+        const productSearch =
+            document.getElementById(
+                "productSearch"
+            );
+
+        const categoryFilter =
+            document.getElementById(
+                "categoryFilter"
+            );
+
+        const imageInput =
+            document.getElementById(
+                "productImage"
+            );
+
+        const imagePreview =
+            document.getElementById(
+                "imagePreview"
+            );
+
+        const uploadContent =
+            document.getElementById(
+                "uploadContent"
+            );
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        /* =================================================
+           SAVE PRODUCTS
+           ================================================= */
+
+        function saveProducts() {
+
+            localStorage.setItem(
+                PRODUCT_STORAGE,
+                JSON.stringify(products)
+            );
+
+        }
+
+
+        /* =================================================
+           TOAST
+           ================================================= */
+
+        function showToast(message) {
+
+            toast.textContent =
+                message;
+
+            toast.classList.add(
+                "show"
+            );
+
+            clearTimeout(
+                window.shailToastTimer
+            );
+
+            window.shailToastTimer =
+                setTimeout(() => {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                }, 3000);
+
+        }
+
+        window.addEventListener("shail-admin-sync-error", () => {
+            showToast("Could not sync saved data. Check your server connection and retry.");
+        });
+
+
+        /* =================================================
+           FORMAT MONEY
+           ================================================= */
+
+        function money(value) {
+
+            return "₹" +
+                Number(value || 0)
+                .toLocaleString(
+                    "en-IN",
+                    {
+                        maximumFractionDigits: 2
+                    }
+                );
+
+        }
+
+
+        /* =================================================
+           UPDATE STATISTICS
+           ================================================= */
+
+        function updateStats() {
+
+            document.getElementById(
+                "totalProducts"
+            ).textContent =
+                products.length;
+
+
+            const metalGlass =
+                products.filter(product =>
+                    product.category === "Aluminium" ||
+                    product.category === "Glass"
+                ).length;
+
+
+            const aquarium =
+                products.filter(product =>
+                    product.category === "Aquarium" ||
+                    product.category === "Live Fish" ||
+                    product.category === "Accessories"
+                ).length;
+
+
+            const value =
+                products.reduce(
+                    (sum, product) =>
+                        sum +
+                        Number(product.price || 0),
+                    0
+                );
+
+
+            document.getElementById(
+                "metalGlassCount"
+            ).textContent =
+                metalGlass;
+
+
+            document.getElementById(
+                "aquariumCount"
+            ).textContent =
+                aquarium;
+
+
+            document.getElementById(
+                "catalogueValue"
+            ).textContent =
+                money(value);
+
+        }
+
+
+        /* =================================================
+           RENDER PRODUCTS
+           ================================================= */
+
+        function renderProducts() {
+
+            const search =
+                productSearch.value
+                    .trim()
+                    .toLowerCase();
+
+
+            const category =
+                categoryFilter.value;
+
+
+            const filtered =
+                products.filter(product => {
+
+                    const matchesSearch =
+                        product.name
+                            .toLowerCase()
+                            .includes(search) ||
+
+                        product.category
+                            .toLowerCase()
+                            .includes(search) ||
+
+                        (product.code || "")
+                            .toLowerCase()
+                            .includes(search);
+
+
+                    const matchesCategory =
+                        category === "all" ||
+                        product.category === category;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesCategory
+                    );
+
+                });
+
+
+            productGrid.innerHTML = "";
+
+
+            if (!filtered.length) {
+
+                emptyState.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            emptyState.style.display =
+                "none";
+
+
+            filtered.forEach(product => {
+
+                const card =
+                    document.createElement(
+                        "article"
+                    );
+
+                card.className =
+                    "product-card";
+
+
+                const imageHTML =
+                    product.image
+
+                    ?
+
+                    `
+                    <img
+                        src="${product.image}"
+                        alt="${escapeHTML(product.name)}"
+                    >
+                    `
+
+                    :
+
+                    `
+                    <div class="product-placeholder">
+                        ◇
+                    </div>
+                    `;
+
+
+                card.innerHTML = `
+
+                    <div class="product-image">
+
+                        ${imageHTML}
+
+                        <span class="category-badge">
+                            ${escapeHTML(product.category)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="product-body">
+
+                        <h3>
+                            ${escapeHTML(product.name)}
+                        </h3>
+
+
+                        <div class="product-description">
+                            ${escapeHTML(
+                                product.description ||
+                                "No description added."
+                            )}
+                        </div>
+
+
+                        <div class="product-price">
+                            ${money(product.price)}
+                        </div>
+
+
+                        <div class="product-actions">
+
+                            <button
+                                class="small-btn"
+                                data-edit="${product.id}"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                class="small-btn delete"
+                                data-delete="${product.id}"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                productGrid.appendChild(
+                    card
+                );
+
+            });
+
+
+            attachProductActions();
+
+        }
+
+
+        /* =================================================
+           ESCAPE HTML
+           ================================================= */
+
+        function escapeHTML(value) {
+
+            return String(value || "")
+                .replace(
+                    /[&<>"']/g,
+                    character => ({
+                        "&": "&amp;",
+                        "<": "&lt;",
+                        ">": "&gt;",
+                        '"': "&quot;",
+                        "'": "&#039;"
+                    }[character])
+                );
+
+        }
+
+
+        /* =================================================
+           PRODUCT ACTIONS
+           ================================================= */
+
+        function attachProductActions() {
+
+            document
+                .querySelectorAll(
+                    "[data-delete]"
+                )
+                .forEach(button => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            const id =
+                                button.dataset.delete;
+
+                            const product =
+                                products.find(
+                                    item =>
+                                        String(item.id) ===
+                                        String(id)
+                                );
+
+
+                            if (!product) {
+                                return;
+                            }
+
+
+                            const confirmed =
+                                confirm(
+                                    `Delete "${product.name}"?`
+                                );
+
+
+                            if (!confirmed) {
+                                return;
+                            }
+
+
+                            products =
+                                products.filter(
+                                    item =>
+                                        String(item.id) !==
+                                        String(id)
+                                );
+
+
+                            saveProducts();
+
+                            renderProducts();
+
+                            updateStats();
+
+                            showToast(
+                                "Product deleted successfully."
+                            );
+
+                        }
+                    );
+
+                });
+
+
+            document
+                .querySelectorAll(
+                    "[data-edit]"
+                )
+                .forEach(button => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            const id =
+                                button.dataset.edit;
+
+                            editProduct(id);
+
+                        }
+                    );
+
+                });
+
+        }
+
+
+        /* =================================================
+           MODAL
+           ================================================= */
+
+        function openProductModal() {
+
+            productModal.classList.add(
+                "active"
+            );
+
+            document.body.style.overflow =
+                "hidden";
+
+            document
+                .getElementById(
+                    "productName"
+                )
+                .focus();
+
+        }
+
+
+        function closeProductModal() {
+
+            productModal.classList.remove(
+                "active"
+            );
+
+            document.body.style.overflow =
+                "";
+
+            productForm.reset();
+
+            imagePreview.style.display =
+                "none";
+
+            uploadContent.style.display =
+                "block";
+
+            delete productForm.dataset.editing;
+
+            document.getElementById(
+                "modalTitle"
+            ).textContent =
+                "Add New Product";
+
+        }
+
+
+        document
+            .getElementById(
+                "addProductButton"
+            )
+            .addEventListener(
+                "click",
+                openProductModal
+            );
+
+
+        document
+            .getElementById(
+                "closeProductModal"
+            )
+            .addEventListener(
+                "click",
+                closeProductModal
+            );
+
+
+        document
+            .getElementById(
+                "cancelProduct"
+            )
+            .addEventListener(
+                "click",
+                closeProductModal
+            );
+
+
+        productModal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    productModal
+                ) {
+
+                    closeProductModal();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           IMAGE PREVIEW
+           ================================================= */
+
+        imageInput.addEventListener(
+            "change",
+            () => {
+
+                const file =
+                    imageInput.files[0];
+
+
+                if (!file) {
+                    return;
+                }
+
+
+                if (
+                    !file.type.startsWith(
+                        "image/"
+                    )
+                ) {
+
+                    showToast(
+                        "Please select an image file."
+                    );
+
+                    imageInput.value =
+                        "";
+
+                    return;
+                }
+
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    event => {
+
+                        imagePreview.src =
+                            event.target.result;
+
+                        imagePreview.style.display =
+                            "block";
+
+                        uploadContent.style.display =
+                            "none";
+
+                    };
+
+
+                reader.readAsDataURL(
+                    file
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           ADD / EDIT PRODUCT
+           ================================================= */
+
+        productForm.addEventListener(
+            "submit",
+            event => {
+
+                event.preventDefault();
+
+
+                const name =
+                    document
+                        .getElementById(
+                            "productName"
+                        )
+                        .value
+                        .trim();
+
+
+                const category =
+                    document
+                        .getElementById(
+                            "productCategory"
+                        )
+                        .value;
+
+
+                const price =
+                    Number(
+                        document
+                            .getElementById(
+                                "productPrice"
+                            )
+                            .value
+                    );
+
+
+                const code =
+                    document
+                        .getElementById(
+                            "productCode"
+                        )
+                        .value
+                        .trim();
+
+
+                const description =
+                    document
+                        .getElementById(
+                            "productDescription"
+                        )
+                        .value
+                        .trim();
+
+
+                if (
+                    !name ||
+                    !category ||
+                    Number.isNaN(price)
+                ) {
+
+                    showToast(
+                        "Please complete the required fields."
+                    );
+
+                    return;
+
+                }
+
+
+                const editingID =
+                    productForm.dataset.editing;
+
+
+                const image =
+                    imagePreview.style.display !==
+                    "none"
+
+                    ?
+
+                    imagePreview.src
+
+                    :
+
+                    "";
+
+
+                if (editingID) {
+
+                    const product =
+                        products.find(
+                            item =>
+                                String(item.id) ===
+                                String(editingID)
+                        );
+
+
+                    if (product) {
+
+                        product.name =
+                            name;
+
+                        product.category =
+                            category;
+
+                        product.price =
+                            price;
+
+                        product.code =
+                            code;
+
+                        product.description =
+                            description;
+
+                        if (image) {
+
+                            product.image =
+                                image;
+
+                        }
+
+                    }
+
+
+                    showToast(
+                        "Product updated successfully."
+                    );
+
+                } else {
+
+                    products.push({
+
+                        id:
+                            Date.now(),
+
+                        name,
+
+                        category,
+
+                        price,
+
+                        code,
+
+                        description,
+
+                        image,
+
+                        createdAt:
+                            new Date()
+                                .toISOString()
+
+                    });
+
+
+                    showToast(
+                        "Product added successfully."
+                    );
+
+                }
+
+
+                saveProducts();
+
+                renderProducts();
+
+                updateStats();
+
+                closeProductModal();
+
+            }
+        );
+
+
+        /* =================================================
+           EDIT PRODUCT
+           ================================================= */
+
+        function editProduct(id) {
+
+            const product =
+                products.find(
+                    item =>
+                        String(item.id) ===
+                        String(id)
+                );
+
+
+            if (!product) {
+                return;
+            }
+
+
+            document.getElementById(
+                "modalTitle"
+            ).textContent =
+                "Edit Product";
+
+
+            document.getElementById(
+                "productName"
+            ).value =
+                product.name;
+
+
+            document.getElementById(
+                "productCategory"
+            ).value =
+                product.category;
+
+
+            document.getElementById(
+                "productPrice"
+            ).value =
+                product.price;
+
+
+            document.getElementById(
+                "productCode"
+            ).value =
+                product.code || "";
+
+
+            document.getElementById(
+                "productDescription"
+            ).value =
+                product.description || "";
+
+
+            productForm.dataset.editing =
+                product.id;
+
+
+            if (product.image) {
+
+                imagePreview.src =
+                    product.image;
+
+                imagePreview.style.display =
+                    "block";
+
+                uploadContent.style.display =
+                    "none";
+
+            }
+
+
+            openProductModal();
+
+        }
+
+
+        /* =================================================
+           SEARCH / FILTER
+           ================================================= */
+
+        productSearch.addEventListener(
+            "input",
+            renderProducts
+        );
+
+
+        categoryFilter.addEventListener(
+            "change",
+            renderProducts
+        );
+
+
+
+        /* =================================================
+           SHOP TIMINGS
+           ================================================= */
+
+        const TIMINGS_STORAGE = "shail_shop_timings";
+
+        const defaultTimings = {
+            enabled: true,
+            notice: "",
+            days: {
+                Monday:    { open:true,  from:"09:00", to:"20:00" },
+                Tuesday:   { open:true,  from:"09:00", to:"20:00" },
+                Wednesday: { open:true,  from:"09:00", to:"20:00" },
+                Thursday:  { open:true,  from:"09:00", to:"20:00" },
+                Friday:    { open:true,  from:"09:00", to:"20:00" },
+                Saturday:  { open:true,  from:"09:00", to:"20:00" },
+                Sunday:    { open:false, from:"09:00", to:"20:00" }
+            }
+        };
+
+        const dayNames = [
+            "Monday", "Tuesday", "Wednesday", "Thursday",
+            "Friday", "Saturday", "Sunday"
+        ];
+
+        function loadTimings() {
+            try {
+                const saved = JSON.parse(
+                    localStorage.getItem(TIMINGS_STORAGE) || "null"
+                );
+                if (!saved || !saved.days) return structuredClone(defaultTimings);
+                return {
+                    enabled: saved.enabled !== false,
+                    notice: saved.notice || "",
+                    days: Object.fromEntries(dayNames.map(day => [
+                        day,
+                        {
+                            open: saved.days[day]?.open !== false,
+                            from: saved.days[day]?.from || "09:00",
+                            to: saved.days[day]?.to || "20:00"
+                        }
+                    ]))
+                };
+            } catch (error) {
+                return structuredClone(defaultTimings);
+            }
+        }
+
+        function saveTimingsData(data) {
+            localStorage.setItem(TIMINGS_STORAGE, JSON.stringify(data));
+        }
+
+        function renderTimingRows(data) {
+            const list = document.getElementById("dayList");
+            list.innerHTML = "";
+
+            dayNames.forEach(day => {
+                const item = data.days[day];
+                const row = document.createElement("div");
+                row.className = "day-row" + (item.open ? "" : " closed");
+                row.dataset.day = day;
+
+                row.innerHTML = `
+                    <div class="day-name">${day}</div>
+                    <div class="time-field">
+                        <span>Opening</span>
+                        <input type="time" data-from="${day}" value="${item.from}" ${item.open ? "" : "disabled"}>
+                    </div>
+                    <div class="time-field">
+                        <span>Closing</span>
+                        <input type="time" data-to="${day}" value="${item.to}" ${item.open ? "" : "disabled"}>
+                    </div>
+                    <label class="day-toggle">
+                        <input type="checkbox" data-day-open="${day}" ${item.open ? "checked" : ""}>
+                        Open
+                    </label>
+                `;
+                list.appendChild(row);
+            });
+
+            list.querySelectorAll("[data-day-open]").forEach(toggle => {
+                toggle.addEventListener("change", () => {
+                    const row = toggle.closest(".day-row");
+                    row.classList.toggle("closed", !toggle.checked);
+                    row.querySelectorAll("input[type='time']").forEach(input => {
+                        input.disabled = !toggle.checked;
+                    });
+                });
+            });
+        }
+
+        function getTimingsFromForm() {
+            const data = {
+                enabled: document.getElementById("shopEnabled").checked,
+                notice: document.getElementById("shopNotice").value.trim(),
+                days: {}
+            };
+
+            dayNames.forEach(day => {
+                data.days[day] = {
+                    open: document.querySelector(`[data-day-open="${day}"]`).checked,
+                    from: document.querySelector(`[data-from="${day}"]`).value,
+                    to: document.querySelector(`[data-to="${day}"]`).value
+                };
+            });
+
+            return data;
+        }
+
+        function loadTimingForm() {
+            const data = loadTimings();
+            document.getElementById("shopEnabled").checked = data.enabled;
+            document.getElementById("shopNotice").value = data.notice;
+            document.getElementById("shopEnabledLabel").textContent = data.enabled ? "OPEN" : "CLOSED";
+            renderTimingRows(data);
+        }
+
+        document.getElementById("shopEnabled").addEventListener("change", event => {
+            document.getElementById("shopEnabledLabel").textContent =
+                event.target.checked ? "OPEN" : "CLOSED";
+        });
+
+        document.getElementById("saveTimingsButton").addEventListener("click", () => {
+            const data = getTimingsFromForm();
+            saveTimingsData(data);
+            showToast("Shop timings saved successfully.");
+        });
+
+        document.getElementById("resetTimingsButton").addEventListener("click", () => {
+            if (!confirm("Reset shop timings to the default schedule?")) return;
+            saveTimingsData(defaultTimings);
+            loadTimingForm();
+            showToast("Default timings restored.");
+        });
+
+        document.getElementById("cancelTimingsButton").addEventListener("click", () => {
+            loadTimingForm();
+            showToast("Unsaved changes discarded.");
+        });
+
+        loadTimingForm();
+
+        /* =================================================
+           SIDEBAR MODULES
+           ================================================= */
+
+        const dashboardStats = document.getElementById("dashboardStats");
+        const productsPanel = document.getElementById("productsPanel");
+        const aquariumPanel = document.getElementById("aquariumPanel");
+        const billingPanel = document.getElementById("billingPanel");
+        const timingsPanel = document.getElementById("timingsPanel");
+        const galleryPanel = document.getElementById("galleryPanel");
+        const settingsPanel = document.getElementById("settingsPanel");
+        const pageTitle = document.querySelector(".page-title h1");
+        const pageDescription = document.querySelector(".page-title p");
+
+        function hideAllModules() {
+            [dashboardStats, productsPanel, aquariumPanel, billingPanel, timingsPanel, galleryPanel, settingsPanel]
+                .forEach(panel => {
+                    if (panel) {
+                        panel.classList.add("module-hidden");
+                    }
+                });
+        }
+
+        function showProductModule(title = "Product Management") {
+            hideAllModules();
+            dashboardStats.classList.remove("module-hidden");
+            productsPanel.classList.remove("module-hidden");
+            pageTitle.textContent = title;
+            pageDescription.textContent = "Manage your aluminium, glass, aquarium, fish and accessory catalogue.";
+        }
+
+        function showAquariumModule() {
+            hideAllModules();
+            aquariumPanel.classList.remove("module-hidden");
+            pageTitle.textContent = "Aquarium & Fish";
+            pageDescription.textContent = "Track stock, species, aquarium units and accessory offerings.";
+            renderAquariumItems();
+        }
+
+        function showBillingModule() {
+            hideAllModules();
+            billingPanel.classList.remove("module-hidden");
+            pageTitle.textContent = "Billing & Invoices";
+            pageDescription.textContent = "Create customer invoices and review sales totals.";
+            renderBillingRecords();
+        }
+
+        function showTimingsModule() {
+            hideAllModules();
+            timingsPanel.classList.remove("module-hidden");
+            pageTitle.textContent = "Shop Timings";
+            pageDescription.textContent = "Control the opening hours displayed to your customers.";
+            loadTimingForm();
+        }
+
+        function showGalleryModule() {
+            hideAllModules();
+            galleryPanel.classList.remove("module-hidden");
+            pageTitle.textContent = "Gallery Manager";
+            pageDescription.textContent = "Manage showcase images and recent project visuals.";
+            renderGalleryItems();
+        }
+
+        function showSettingsModule() {
+            hideAllModules();
+            settingsPanel.classList.remove("module-hidden");
+            pageTitle.textContent = "Business Settings";
+            pageDescription.textContent = "Update contact details, address and general storefront information.";
+            loadBusinessSettings();
+        }
+
+        document
+            .querySelectorAll(".nav-item")
+            .forEach(item => {
+                item.addEventListener("click", () => {
+                    document.querySelectorAll(".nav-item").forEach(nav => nav.classList.remove("active"));
+                    item.classList.add("active");
+
+                    const section = item.dataset.section;
+
+                    if (section === "dashboard") {
+                        showProductModule("Dashboard");
+                    } else if (section === "products") {
+                        showProductModule("Product Management");
+                    } else if (section === "aquarium") {
+                        showAquariumModule();
+                    } else if (section === "billing") {
+                        showBillingModule();
+                    } else if (section === "timings") {
+                        showTimingsModule();
+                    } else if (section === "gallery") {
+                        showGalleryModule();
+                    } else if (section === "settings") {
+                        showSettingsModule();
+                    }
+                });
+            });
+
+
+        /* =================================================
+           AQUARIUM & FISH
+           ================================================= */
+
+        const AQUARIUM_STORAGE = "shail_aquarium_items";
+
+        function loadAquariumItems() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(AQUARIUM_STORAGE) || "[]");
+                return Array.isArray(saved) ? saved : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveAquariumItems(items) {
+            localStorage.setItem(AQUARIUM_STORAGE, JSON.stringify(items));
+        }
+
+        function renderAquariumItems() {
+            const list = document.getElementById("aquariumList");
+            const items = loadAquariumItems();
+
+            if (!list) return;
+            list.innerHTML = "";
+
+            if (!items.length) {
+                list.innerHTML = '<div class="empty-state" style="display:block; padding:25px 0;">No aquarium or fish items added yet.</div>';
+                return;
+            }
+
+            items.forEach(item => {
+                const row = document.createElement("div");
+                row.className = "module-item";
+                row.innerHTML = `
+                    <div>
+                        <strong>${escapeHTML(item.name)}</strong>
+                        <span>${escapeHTML(item.category)} · Stock: ${Number(item.stock || 0)}</span>
+                        <small>${escapeHTML(item.notes || "No notes added.")}</small>
+                    </div>
+                    <div class="muted-pill">₹${Number(item.price || 0).toLocaleString("en-IN")}</div>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        const aquariumForm = document.getElementById("aquariumForm");
+        const addAquariumButton = document.getElementById("addAquariumButton");
+        const cancelAquariumButton = document.getElementById("cancelAquariumButton");
+
+        if (aquariumForm) {
+            aquariumForm.addEventListener("submit", event => {
+                event.preventDefault();
+
+                const item = {
+                    id: Date.now(),
+                    name: document.getElementById("aquariumName").value.trim(),
+                    category: document.getElementById("aquariumCategory").value,
+                    price: Number(document.getElementById("aquariumPrice").value || 0),
+                    stock: Number(document.getElementById("aquariumStock").value || 0),
+                    notes: document.getElementById("aquariumNotes").value.trim()
+                };
+
+                if (!item.name) {
+                    showToast("Please enter an aquarium item name.");
+                    return;
+                }
+
+                const items = loadAquariumItems();
+                items.push(item);
+                saveAquariumItems(items);
+                renderAquariumItems();
+                aquariumForm.reset();
+                showToast("Aquarium item saved successfully.");
+            });
+        }
+
+        if (addAquariumButton) {
+            addAquariumButton.addEventListener("click", () => {
+                if (aquariumForm) {
+                    aquariumForm.scrollIntoView({ behavior: "smooth", block: "start" });
+                    document.getElementById("aquariumName").focus();
+                }
+            });
+        }
+
+        if (cancelAquariumButton) {
+            cancelAquariumButton.addEventListener("click", () => aquariumForm.reset());
+        }
+
+
+        /* =================================================
+           BILLING
+           ================================================= */
+
+        const BILLING_STORAGE = "shail_billing_records";
+
+        function loadBillingRecords() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(BILLING_STORAGE) || "[]");
+                return Array.isArray(saved) ? saved : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveBillingRecords(records) {
+            localStorage.setItem(BILLING_STORAGE, JSON.stringify(records));
+        }
+
+        function renderBillingRecords() {
+            const records = loadBillingRecords();
+            const list = document.getElementById("invoiceList");
+            const totalEl = document.getElementById("invoiceTotal");
+            const countEl = document.getElementById("invoiceCount");
+            const todayEl = document.getElementById("todaySales");
+
+            if (!list) return;
+
+            const total = records.reduce((sum, record) => sum + Number(record.total || 0), 0);
+            const today = new Date().toDateString();
+            const todaysSales = records
+                .filter(record => record.createdAt && new Date(record.createdAt).toDateString() === today)
+                .reduce((sum, record) => sum + Number(record.total || 0), 0);
+
+            totalEl.textContent = "₹" + total.toLocaleString("en-IN");
+            countEl.textContent = String(records.length);
+            todayEl.textContent = "₹" + todaysSales.toLocaleString("en-IN");
+
+            list.innerHTML = "";
+
+            if (!records.length) {
+                list.innerHTML = '<div class="empty-state" style="display:block; padding:25px 0;">No invoices created yet.</div>';
+                return;
+            }
+
+            records.slice().reverse().forEach(record => {
+                const row = document.createElement("div");
+                row.className = "module-item";
+                row.innerHTML = `
+                    <div>
+                        <strong>${escapeHTML(record.customer)}</strong>
+                        <span>${escapeHTML(record.item)} · Qty: ${record.qty} · ${escapeHTML(record.method)}</span>
+                        <small>${escapeHTML(record.phone)} · ${new Date(record.createdAt).toLocaleString()}</small>
+                    </div>
+                    <div class="muted-pill">₹${Number(record.total || 0).toLocaleString("en-IN")}</div>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        const billingForm = document.getElementById("billingForm");
+        const clearBillingButton = document.getElementById("clearBillingButton");
+
+        if (billingForm) {
+            billingForm.addEventListener("submit", event => {
+                event.preventDefault();
+
+                const customer = document.getElementById("billingCustomer").value.trim();
+                const phone = document.getElementById("billingPhone").value.trim();
+                const item = document.getElementById("billingItem").value.trim();
+                const qty = Number(document.getElementById("billingQty").value || 1);
+                const price = Number(document.getElementById("billingPrice").value || 0);
+                const method = document.getElementById("billingMethod").value;
+
+                if (!customer || !phone || !item) {
+                    showToast("Customer details and item name are required.");
+                    return;
+                }
+
+                const record = {
+                    id: Date.now(),
+                    customer,
+                    phone,
+                    item,
+                    qty,
+                    price,
+                    method,
+                    total: qty * price,
+                    createdAt: new Date().toISOString()
+                };
+
+                const records = loadBillingRecords();
+                records.push(record);
+                saveBillingRecords(records);
+                renderBillingRecords();
+                billingForm.reset();
+                showToast("Invoice created successfully.");
+            });
+        }
+
+        if (clearBillingButton) {
+            clearBillingButton.addEventListener("click", () => billingForm.reset());
+        }
+
+
+        /* =================================================
+           GALLERY MANAGER
+           ================================================= */
+
+        const GALLERY_STORAGE = "shail_gallery_items";
+
+        function loadGalleryItems() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(GALLERY_STORAGE) || "[]");
+                return Array.isArray(saved) ? saved : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveGalleryItems(items) {
+            localStorage.setItem(GALLERY_STORAGE, JSON.stringify(items));
+        }
+
+        function renderGalleryItems() {
+            const grid = document.getElementById("galleryGrid");
+            const items = loadGalleryItems();
+
+            if (!grid) return;
+            grid.innerHTML = "";
+
+            if (!items.length) {
+                grid.innerHTML = '<div class="empty-state" style="display:block; padding:25px 0; grid-column:1 / -1;">No gallery images saved yet.</div>';
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "gallery-card";
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${escapeHTML(item.title)}">
+                    <div class="gallery-card-content">
+                        <strong>${escapeHTML(item.title)}</strong>
+                        <span>${escapeHTML(item.category)}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        const galleryForm = document.getElementById("galleryForm");
+        const clearGalleryButton = document.getElementById("clearGalleryButton");
+
+        if (galleryForm) {
+            galleryForm.addEventListener("submit", event => {
+                event.preventDefault();
+
+                const file = document.getElementById("galleryImage").files[0];
+                const title = document.getElementById("galleryTitle").value.trim();
+                const category = document.getElementById("galleryCategory").value;
+
+                if (!file || !title) {
+                    showToast("Add a title and choose an image file.");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const items = loadGalleryItems();
+                    items.push({
+                        id: Date.now(),
+                        title,
+                        category,
+                        image: reader.result
+                    });
+                    saveGalleryItems(items);
+                    renderGalleryItems();
+                    galleryForm.reset();
+                    showToast("Gallery image saved successfully.");
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        if (clearGalleryButton) {
+            clearGalleryButton.addEventListener("click", () => galleryForm.reset());
+        }
+
+
+        /* =================================================
+           BUSINESS SETTINGS
+           ================================================= */
+
+        const SETTINGS_STORAGE = "shail_business_settings";
+
+        const defaultBusinessSettings = {
+            businessName: "SHAIL Aluminium & Glass Fabrikants",
+            phone: "+91 9532475637",
+            whatsapp: "919532475637",
+            email: "hello@shailfabricants.in",
+            address: "Gorakhpur, Uttar Pradesh",
+            announcement: "Premium aluminium, glass, aquarium and accessory solutions for homes and businesses."
+        };
+
+        function loadBusinessSettings() {
+            const saved = JSON.parse(localStorage.getItem(SETTINGS_STORAGE) || "null");
+            const settings = saved || defaultBusinessSettings;
+
+            document.getElementById("shopName").value = settings.businessName || defaultBusinessSettings.businessName;
+            document.getElementById("shopPhone").value = settings.phone || defaultBusinessSettings.phone;
+            document.getElementById("shopWhatsapp").value = settings.whatsapp || defaultBusinessSettings.whatsapp;
+            document.getElementById("shopEmail").value = settings.email || defaultBusinessSettings.email;
+            document.getElementById("shopAddress").value = settings.address || defaultBusinessSettings.address;
+            document.getElementById("shopAnnouncement").value = settings.announcement || defaultBusinessSettings.announcement;
+
+            return settings;
+        }
+
+        function saveBusinessSettings(settings) {
+            localStorage.setItem(SETTINGS_STORAGE, JSON.stringify(settings));
+        }
+
+        const settingsForm = document.getElementById("settingsForm");
+        const resetSettingsButton = document.getElementById("resetSettingsButton");
+
+        if (settingsForm) {
+            settingsForm.addEventListener("submit", event => {
+                event.preventDefault();
+
+                const settings = {
+                    businessName: document.getElementById("shopName").value.trim() || defaultBusinessSettings.businessName,
+                    phone: document.getElementById("shopPhone").value.trim() || defaultBusinessSettings.phone,
+                    whatsapp: document.getElementById("shopWhatsapp").value.trim() || defaultBusinessSettings.whatsapp,
+                    email: document.getElementById("shopEmail").value.trim() || defaultBusinessSettings.email,
+                    address: document.getElementById("shopAddress").value.trim() || defaultBusinessSettings.address,
+                    announcement: document.getElementById("shopAnnouncement").value.trim() || defaultBusinessSettings.announcement
+                };
+
+                saveBusinessSettings(settings);
+                showToast("Business settings saved successfully.");
+            });
+        }
+
+        if (resetSettingsButton) {
+            resetSettingsButton.addEventListener("click", () => {
+                saveBusinessSettings(defaultBusinessSettings);
+                loadBusinessSettings();
+                showToast("Settings reset to default values.");
+            });
+        }
+
+
+        /* =================================================
+           ADMIN LANGUAGE
+           ================================================= */
+
+        const adminTranslations = {
+            "administration": "प्रशासन",
+            "system online": "सिस्टम ऑनलाइन",
+            "management": "प्रबंधन",
+            "dashboard": "डैशबोर्ड",
+            "products": "उत्पाद",
+            "aquarium & fish": "एक्वेरियम और मछलियां",
+            "billing": "बिलिंग",
+            "shop timings": "दुकान का समय",
+            "gallery": "गैलरी",
+            "settings": "सेटिंग्स",
+            "logout": "लॉग आउट",
+            "manage your aluminium, glass, aquarium, fish and accessory catalogue.": "एल्यूमीनियम, कांच, एक्वेरियम, मछलियों और सामान की सूची प्रबंधित करें।",
+            "open website": "वेबसाइट खोलें",
+            "total products": "कुल उत्पाद",
+            "catalogue": "उत्पाद सूची",
+            "aluminium & glass": "एल्यूमीनियम और कांच",
+            "catalogue value": "उत्पाद सूची का कुल मूल्य",
+            "current listings": "वर्तमान उत्पाद",
+            "product catalogue": "उत्पाद सूची",
+            "add and manage products displayed on the customer website.": "ग्राहक वेबसाइट पर दिखने वाले उत्पाद जोड़ें और प्रबंधित करें।",
+            "+ add product": "+ उत्पाद जोड़ें",
+            "all categories": "सभी श्रेणियां",
+            "aluminium": "एल्यूमीनियम",
+            "glass": "कांच",
+            "aquarium": "एक्वेरियम",
+            "live fish": "जीवित मछलियां",
+            "accessories": "सामान",
+            "edit": "बदलें",
+            "delete": "हटाएं",
+            "no products found": "कोई उत्पाद नहीं मिला",
+            "add your first product to start building the catalogue.": "उत्पाद सूची शुरू करने के लिए अपना पहला उत्पाद जोड़ें।",
+            "control the opening hours shown on your customer website.": "ग्राहक वेबसाइट पर दिखने वाला दुकान का समय तय करें।",
+            "reset defaults": "डिफ़ॉल्ट समय रीसेट करें",
+            "shop availability": "दुकान की उपलब्धता",
+            "turn this off temporarily if the shop is closed for a special reason.": "यदि किसी विशेष कारण से दुकान बंद है, तो इसे अस्थायी रूप से बंद करें।",
+            "open": "खुला",
+            "closed": "बंद",
+            "monday": "सोमवार",
+            "tuesday": "मंगलवार",
+            "wednesday": "बुधवार",
+            "thursday": "गुरुवार",
+            "friday": "शुक्रवार",
+            "saturday": "शनिवार",
+            "sunday": "रविवार",
+            "opening": "खुलने का समय",
+            "closing": "बंद होने का समय",
+            "customer notice": "ग्राहकों के लिए सूचना",
+            "cancel changes": "बदलाव रद्द करें",
+            "save shop timings": "दुकान का समय सहेजें",
+            "aquarium & fish inventory": "एक्वेरियम और मछली का स्टॉक",
+            "add and manage aquarium stock, fish and accessories.": "एक्वेरियम का स्टॉक, मछलियां और सामान जोड़ें और प्रबंधित करें।",
+            "+ add item": "+ वस्तु जोड़ें",
+            "item name": "वस्तु का नाम",
+            "category": "श्रेणी",
+            "price (₹)": "कीमत (₹)",
+            "stock": "स्टॉक",
+            "notes": "टिप्पणियां",
+            "clear": "साफ़ करें",
+            "save item": "वस्तु सहेजें",
+            "no aquarium or fish items added yet.": "अभी तक एक्वेरियम या मछली की कोई वस्तु नहीं जोड़ी गई है।",
+            "billing & invoices": "बिलिंग और चालान",
+            "track customer orders and create quick sales records.": "ग्राहक ऑर्डर देखें और बिक्री का रिकॉर्ड बनाएं।",
+            "total sales": "कुल बिक्री",
+            "invoices": "चालान",
+            "today": "आज",
+            "customer name": "ग्राहक का नाम",
+            "phone": "फोन नंबर",
+            "item": "वस्तु",
+            "quantity": "मात्रा",
+            "unit price (₹)": "प्रति इकाई कीमत (₹)",
+            "payment method": "भुगतान का तरीका",
+            "cash": "नकद",
+            "upi": "यूपीआई",
+            "bank transfer": "बैंक ट्रांसफर",
+            "card": "कार्ड",
+            "create invoice": "चालान बनाएं",
+            "no invoices created yet.": "अभी तक कोई चालान नहीं बनाया गया है।",
+            "gallery manager": "गैलरी प्रबंधन",
+            "upload and display project images for the showcase section.": "प्रदर्शनी अनुभाग के लिए परियोजनाओं की तस्वीरें अपलोड करें।",
+            "image title": "तस्वीर का शीर्षक",
+            "project": "परियोजना",
+            "architecture": "वास्तुकला",
+            "choose image": "तस्वीर चुनें",
+            "save to gallery": "गैलरी में सहेजें",
+            "no gallery images saved yet.": "अभी तक गैलरी में कोई तस्वीर नहीं है।",
+            "business settings": "व्यापार सेटिंग्स",
+            "update the public-facing company details and contact information.": "वेबसाइट पर दिखने वाली कंपनी और संपर्क जानकारी अपडेट करें।",
+            "business name": "व्यापार का नाम",
+            "whatsapp": "व्हाट्सऐप",
+            "email": "ईमेल",
+            "address": "पता",
+            "business notice": "व्यापार सूचना",
+            "reset": "रीसेट करें",
+            "save settings": "सेटिंग्स सहेजें",
+            "add new product": "नया उत्पाद जोड़ें",
+            "product name": "उत्पाद का नाम",
+            "select category": "श्रेणी चुनें",
+            "product code": "उत्पाद कोड",
+            "product description": "उत्पाद का विवरण",
+            "product image": "उत्पाद की तस्वीर",
+            "click to upload product image": "उत्पाद की तस्वीर अपलोड करने के लिए क्लिक करें",
+            "cancel": "रद्द करें",
+            "save product": "उत्पाद सहेजें",
+            "search products...": "उत्पाद खोजें...",
+            "example: we are closed on sunday for weekly maintenance.": "उदाहरण: साप्ताहिक रखरखाव के लिए रविवार को दुकान बंद रहेगी।",
+            "example: premium guppy pair": "उदाहरण: प्रीमियम गप्पी मछलियों की जोड़ी",
+            "add product notes, tank size, fish type or care instructions.": "उत्पाद की जानकारी, टैंक का आकार, मछली का प्रकार या देखभाल के निर्देश लिखें।",
+            "example: aditi sharma": "उदाहरण: अदिति शर्मा",
+            "glass door / aquarium / fish": "कांच का दरवाज़ा / एक्वेरियम / मछली",
+            "example: aluminium facade": "उदाहरण: एल्यूमीनियम का अग्रभाग",
+            "short message shown to visitors on the website.": "वेबसाइट पर आने वाले लोगों को दिखने वाला छोटा संदेश।",
+            "example: premium aluminium door": "उदाहरण: प्रीमियम एल्यूमीनियम दरवाज़ा",
+            "describe the product, specifications, dimensions, material, features...": "उत्पाद, विशेषताओं, माप, सामग्री और खूबियों का विवरण दें...",
+            "product deleted successfully.": "उत्पाद सफलतापूर्वक हटाया गया।",
+            "shop timings saved successfully.": "दुकान का समय सफलतापूर्वक सहेजा गया।",
+            "default timings restored.": "डिफ़ॉल्ट समय बहाल किया गया।",
+            "unsaved changes discarded.": "बिना सहेजे बदलाव रद्द किए गए।",
+            "please enter an aquarium item name.": "कृपया एक्वेरियम की वस्तु का नाम दर्ज करें।",
+            "aquarium item saved successfully.": "एक्वेरियम की वस्तु सफलतापूर्वक सहेजी गई।",
+            "customer details and item name are required.": "ग्राहक का विवरण और वस्तु का नाम आवश्यक है।",
+            "invoice created successfully.": "चालान सफलतापूर्वक बनाया गया।",
+            "add a title and choose an image file.": "शीर्षक लिखें और तस्वीर चुनें।",
+            "gallery image saved successfully.": "गैलरी की तस्वीर सफलतापूर्वक सहेजी गई।",
+            "business settings saved successfully.": "व्यापार सेटिंग्स सफलतापूर्वक सहेजी गईं।",
+            "settings reset to default values.": "सेटिंग्स डिफ़ॉल्ट मानों पर रीसेट की गईं।"
+        };
+
+        const originalAdminText = new WeakMap();
+        const originalAdminAttributes = new WeakMap();
+        const normalizeAdminText = value => value.replace(/\s+/g, " ").trim().toLowerCase();
+        let adminLanguage = localStorage.getItem("shail_language") === "HI" ? "HI" : "EN";
+
+        function applyAdminLanguage() {
+            const isHindi = adminLanguage === "HI";
+            document.documentElement.lang = isHindi ? "hi" : "en";
+            document.title = isHindi ? "SHAIL — प्रशासन" : "SHAIL — Administration";
+
+            const languageLabel = document.getElementById("adminLanguageLabel");
+            const languageToggle = document.getElementById("languageToggle");
+            const languageButtonText = isHindi ? "English" : "हिंदी";
+            const languageButtonLabel = isHindi ? "भाषा बदलें" : "Switch language";
+            if (languageLabel && languageLabel.textContent !== languageButtonText) {
+                languageLabel.textContent = languageButtonText;
+            }
+            if (languageToggle && languageToggle.getAttribute("aria-label") !== languageButtonLabel) {
+                languageToggle.setAttribute("aria-label", languageButtonLabel);
+            }
+
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            let node;
+            while ((node = walker.nextNode())) {
+                if (node.parentElement?.closest("script, style, template, [data-no-translate]")) continue;
+                if (!originalAdminText.has(node)) originalAdminText.set(node, node.textContent);
+                const original = originalAdminText.get(node);
+                const translation = isHindi ? adminTranslations[normalizeAdminText(original)] : null;
+                const leading = original.match(/^\s*/)?.[0] || "";
+                const trailing = original.match(/\s*$/)?.[0] || "";
+                const value = translation ? `${leading}${translation}${trailing}` : original;
+                if (node.textContent !== value) node.textContent = value;
+            }
+
+            document.querySelectorAll("[placeholder], [aria-label], [title], img[alt]").forEach(element => {
+                if (element.closest("[data-no-translate]")) return;
+                let saved = originalAdminAttributes.get(element);
+                if (!saved) {
+                    saved = {};
+                    originalAdminAttributes.set(element, saved);
+                }
+                ["placeholder", "aria-label", "title", "alt"].forEach(attribute => {
+                    if (!element.hasAttribute(attribute)) return;
+                    if (!(attribute in saved)) saved[attribute] = element.getAttribute(attribute);
+                    const original = saved[attribute];
+                    const value = isHindi ? adminTranslations[normalizeAdminText(original)] || original : original;
+                    if (element.getAttribute(attribute) !== value) element.setAttribute(attribute, value);
+                });
+            });
+        }
+
+        document.getElementById("languageToggle").addEventListener("click", () => {
+            adminLanguage = adminLanguage === "EN" ? "HI" : "EN";
+            localStorage.setItem("shail_language", adminLanguage);
+            applyAdminLanguage();
+        });
+
+        window.addEventListener("storage", event => {
+            if (event.key === "shail_language") {
+                adminLanguage = event.newValue === "HI" ? "HI" : "EN";
+                applyAdminLanguage();
+            }
+        });
+
+        const adminLanguageObserver = new MutationObserver(applyAdminLanguage);
+        adminLanguageObserver.observe(document.body, { childList: true, characterData: true, subtree: true });
+
+
+        /* =================================================
+           OPEN WEBSITE
+           ================================================= */
+
+        document
+            .getElementById(
+                "openWebsite"
+            )
+            .addEventListener(
+                "click",
+                async () => {
+
+                    window.open(
+                        "index.html",
+                        "_blank"
+                    );
+
+                }
+            );
+
+
+        /* =================================================
+           LOGOUT
+           ================================================= */
+
+        document
+            .getElementById(
+                "logoutButton"
+            )
+            .addEventListener(
+                "click",
+                async () => {
+
+                    sessionStorage.removeItem(
+                        "shail_admin_logged_in"
+                    );
+
+                    sessionStorage.removeItem(
+                        "shail_admin_user"
+                    );
+
+                    await fetch("/api/admin/logout", {
+                        method: "POST",
+                        credentials: "same-origin"
+                    }).catch(() => {});
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+
+        /* =================================================
+           ESC KEY
+           ================================================= */
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key ===
+                    "Escape"
+                ) {
+
+                    closeProductModal();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           INITIALIZE
+           ================================================= */
+
+        renderProducts();
+        renderAquariumItems();
+        renderBillingRecords();
+        renderGalleryItems();
+        loadBusinessSettings();
+        updateStats();
+        applyAdminLanguage();
+        showProductModule("Dashboard");
+
+        console.log(
+            "SHAIL Product Management initialized."
+        );
+
+    </script>
+
+</body>
+</html>

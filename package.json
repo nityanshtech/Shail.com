@@ -1,0 +1,13 @@
+{
+  "name": "shail-business-website",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check js/script.js",
+    "test": "node --test"
+  }
+}
